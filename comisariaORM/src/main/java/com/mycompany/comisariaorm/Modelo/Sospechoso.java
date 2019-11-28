@@ -6,11 +6,13 @@
 package com.mycompany.comisariaorm.Modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -23,22 +25,28 @@ public class Sospechoso implements Serializable {
    private static final long serialVersoinUID=1L;
     @Id
     //@GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="id_sospechoso")        
     long id;
-    @Column(name = "DOCUMENTO")
-    String documento;
-    @Column(name = "NOMBRE")
-    String nombre;
-    @Column(name = "APELLIDOS")
-    String apellidos;
-    @Column(name = "ANTECEDENTES")
-    String antecedentes;
-    @Column(name = "HECHOS")
-    String hechos;
     
-     public Sospechoso() {
+    @Column(name = "documentos")
+    private String documento;
+    
+    @Column(name = "nombre")
+    private String nombre;
+    
+    @Column(name = "apellidos")
+    private String apellidos;
+    
+    @Column(name = "antecedentes")
+    private String antecedentes;
+    
+    @Column(name = "hechos")
+    private String hechos;
+    
+    @OneToMany(mappedBy = "sospechoso")
+    private List<Direccion>direcciones;
+    public Sospechoso() {
     }
-     
-     
         public Sospechoso(long id, String documento, String nombre, String apellidos, String antecedentes, String hechos) {
         this.id = id;
         this.documento = documento;
@@ -109,6 +117,14 @@ public class Sospechoso implements Serializable {
         this.apellidos = apellidos;
         this.antecedentes = antecedentes;
         this.hechos = hechos;
+    }
+
+    public List<Direccion> getDirecciones() {
+        return direcciones;
+    }
+
+    public void setDirecciones(List<Direccion> direcciones) {
+        this.direcciones = direcciones;
     }
 
  

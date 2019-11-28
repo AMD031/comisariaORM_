@@ -5,6 +5,7 @@
  */
 package com.mycompany.comisariaorm.Vista;
 
+import com.mycompany.comisariaorm.Modelo.Direccion;
 import com.mycompany.comisariaorm.Modelo.Sospechoso;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,27 +20,38 @@ public class Test {
     public static void main(String[] args) {
         
        EntityManager manager=emf.createEntityManager();
-     
-        
         manager.getTransaction().begin();
         //long id, String documento, String nombre, String apellidos, String antecedentes, String hechos
         Sospechoso s1 = new Sospechoso(1L,"f5sd656f","fajsl","fjsdl","fdskl","fjsdal");
         Sospechoso s2 = new Sospechoso(2L,"f5sd656f","fajsl","fjsdl","fdskl","fjsdal");
+        Direccion d1 = new Direccion(1L, "calle 1", s1);
+        
         manager.persist(s1);
         manager.persist(s2);
-        manager.getTransaction().commit();  
+        manager.persist(d1);
         
-         List<Sospechoso> sospechosos= manager.createQuery("FROM Sospechoso ").getResultList();
-         listar((ArrayList<Sospechoso>) sospechosos);
-         manager.close();
-         
-         
+        manager.getTransaction().commit();  
+        manager.close();  
+        
+        listar(1L);
     }
 
-    static void listar(ArrayList<Sospechoso>sos){
-       for(Sospechoso s : sos){
-             System.out.println(s);
-       }
+    static void listar(long n){
+        EntityManager manager=emf.createEntityManager();
+        manager.getTransaction().begin();
+        Sospechoso sos = manager.find(Sospechoso.class, n);
+        System.out.println(sos);
+       // sos.getDirecciones().size();
+        for (Direccion s : sos.getDirecciones()) {
+                System.out.println("elemento: ");
+            if(s!=null){        
+               System.out.println(s);  
+            }
+           
+        }
+        
+        manager.getTransaction().commit();        
+        manager.close();
     }
     
     
