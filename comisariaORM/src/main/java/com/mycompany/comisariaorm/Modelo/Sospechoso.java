@@ -9,8 +9,6 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,7 +18,7 @@ import javax.persistence.Table;
  * @author Your Name <Antonio Martinez Diaz>
  */
 @Entity
-@Table(name = "SOSPECHOSOS")
+@Table(name = "sospechosos")
 public class Sospechoso implements Serializable {
    private static final long serialVersoinUID=1L;
     @Id
@@ -45,6 +43,13 @@ public class Sospechoso implements Serializable {
     
     @OneToMany(mappedBy = "sospechoso")
     private List<Direccion>direcciones;
+
+    @OneToMany(mappedBy = "sospechoso")
+    private List<Correo>correos;
+    
+    @OneToMany(mappedBy = "sospechoso")
+    private List<Telefono>telefonos;
+     
     public Sospechoso() {
     }
         public Sospechoso(long id, String documento, String nombre, String apellidos, String antecedentes, String hechos) {
@@ -55,8 +60,7 @@ public class Sospechoso implements Serializable {
         this.antecedentes = antecedentes;
         this.hechos = hechos;
     }
-
-
+        
     public long getId() {
         return id;
     }
@@ -106,10 +110,6 @@ public class Sospechoso implements Serializable {
         this.hechos = hechos;
     }
 
-    @Override
-    public String toString() {
-        return "Sospechoso{" + "id=" + id + ", documento=" + documento + ", nombre=" + nombre + ", apellidos=" + apellidos + ", antecedentes=" + antecedentes + ", hechos=" + hechos + '}';
-    }
 
     public Sospechoso(String documento, String nombre, String apellidos, String antecedentes, String hechos) {
         this.documento = documento;
@@ -127,8 +127,28 @@ public class Sospechoso implements Serializable {
         this.direcciones = direcciones;
     }
 
+    public List<Telefono> getTelefonos() {
+        return telefonos;
+    }
+
+    public void setTelefonos(List<Telefono> telefonos) {
+        this.telefonos = telefonos;
+    }
+
+    public List<Correo> getCorreos() {
+        return correos;
+    }
+
+    public void setCorreos(List<Correo> correos) {
+        this.correos = correos;
+    }
+
  
    
+    @Override
+    public String toString() {
+        return "Sospechoso{" + "id=" + id + ", documento=" + documento + ", nombre=" + nombre + ", apellidos=" + apellidos + ", antecedentes=" + antecedentes + ", hechos=" + hechos + '}';
+    }
 
     
 }
