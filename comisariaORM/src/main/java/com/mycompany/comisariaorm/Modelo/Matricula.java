@@ -6,6 +6,7 @@
 package com.mycompany.comisariaorm.Modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +24,7 @@ import javax.persistence.Table;
 @Table(name ="matriculas")
 public class Matricula implements Serializable{
     @Id
-    @Column(name="id_matricula")
+    @Column(name="id_matricula", updatable = false, nullable = false)
     private long id_matricula;
     @Column(name="matricula")
     private String matricula;
@@ -32,6 +33,22 @@ public class Matricula implements Serializable{
     @JoinColumn(name = "id_sospechoso")
     private Sospechoso sospechoso;
 
+    public Matricula(long id_matricula, String matricula, Sospechoso sospechoso) {
+        this.id_matricula = id_matricula;
+        this.matricula = matricula;
+        this.sospechoso = sospechoso;
+    }
+
+    public Matricula(String matricula, Sospechoso sospechoso) {
+        this.matricula = matricula;
+        this.sospechoso = sospechoso;
+    }
+    
+    public Matricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    
     public long getId_matricula() {
         return id_matricula;
     }
@@ -59,6 +76,39 @@ public class Matricula implements Serializable{
     public Matricula() {
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Matricula other = (Matricula) obj;
+        if (this.id_matricula != other.id_matricula) {
+            return false;
+        }
+        if (!Objects.equals(this.matricula, other.matricula)) {
+            return false;
+        }
+        if (!Objects.equals(this.sospechoso, other.sospechoso)) {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
+    
     @Override
     public String toString() {
         return "Matricula{" + "id_matricula=" + id_matricula + ", matricula=" + matricula + '}';

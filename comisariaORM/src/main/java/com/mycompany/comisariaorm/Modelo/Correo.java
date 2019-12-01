@@ -5,10 +5,15 @@
  */
 package com.mycompany.comisariaorm.Modelo;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,13 +24,37 @@ import javax.persistence.Table;
 @Table(name="correo")
 public class Correo {
    @Id
-   @Column(name="id_correo")
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   @Column(name="id_correo", updatable = false, nullable = false)
    private long id_correo;
-  @Column(name="correo")
+   @Column(name="correo")
    private String correo;
+   
+   @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "id_sospechoso")
    private Sospechoso sospechoso;
 
+    public Correo() {
+    }
+
+    
+     public Correo(long id_correo, String correo, Sospechoso sospechoso) {
+        this.id_correo = id_correo;
+        this.correo = correo;
+        this.sospechoso = sospechoso;
+    }
+    public Correo(String correo, Sospechoso sospechoso) {
+        this.correo = correo;
+        this.sospechoso = sospechoso;
+    }
+
+    public Correo(String correo) {
+        this.correo = correo;
+    }
+
+   
+   
+   
     public long getId_correo() {
         return id_correo;
     }
@@ -53,6 +82,30 @@ public class Correo {
     @Override
     public String toString() {
         return "Correo{" + "id_correo=" + id_correo + ", correo=" + correo + ", sospechoso=" + sospechoso + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + (int) (this.id_correo ^ (this.id_correo >>> 32));
+        hash = 29 * hash + Objects.hashCode(this.correo);
+        hash = 29 * hash + Objects.hashCode(this.sospechoso);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Correo other = (Correo) obj;
+        return true;
     }
    
    

@@ -4,12 +4,18 @@
  * and open the template in the editor.
  */
 package com.mycompany.comisariaorm.Modelo;
-
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,9 +27,10 @@ import javax.persistence.Table;
 @Table(name = "sospechosos")
 public class Sospechoso implements Serializable {
    private static final long serialVersoinUID=1L;
+   
     @Id
-    //@GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="id_sospechoso")        
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id_sospechoso" , updatable = false, nullable = false)        
     long id;
     
     @Column(name = "documentos")
@@ -41,26 +48,68 @@ public class Sospechoso implements Serializable {
     @Column(name = "hechos")
     private String hechos;
     
-    @OneToMany(mappedBy = "sospechoso")
+    @OneToMany(mappedBy = "sospechoso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Direccion>direcciones;
 
-    @OneToMany(mappedBy = "sospechoso")
+    @OneToMany(mappedBy = "sospechoso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Correo>correos;
     
-    @OneToMany(mappedBy = "sospechoso")
+    @OneToMany(mappedBy = "sospechoso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Telefono>telefonos;
-     
+
+    @ManyToOne
+    @JoinColumn(name="id_individuo")
+    private Sospechoso individuo;
+    
+    @OneToMany(mappedBy = "individuo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sospechoso> acopagnates; 
+    
+    
+    @OneToMany(mappedBy = "sospechoso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Matricula> matriculas; 
+
     public Sospechoso() {
+        this.direcciones = new ArrayList<>();
+        this.correos = new ArrayList<>();
+        this.telefonos  = new ArrayList<>();
+        this.acopagnates = new ArrayList<>();
+        this.matriculas  = new ArrayList<>();       
     }
-        public Sospechoso(long id, String documento, String nombre, String apellidos, String antecedentes, String hechos) {
-        this.id = id;
+
+    public Sospechoso(String documento, String nombre, String apellidos, String antecedentes, String hechos, List<Direccion> direcciones, List<Correo> correos, List<Telefono> telefonos, Sospechoso individuo, List<Sospechoso> acopagnates, List<Matricula> matriculas) {
         this.documento = documento;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.antecedentes = antecedentes;
         this.hechos = hechos;
+        this.direcciones = direcciones;
+        this.correos = correos;
+        this.telefonos = telefonos;
+        this.individuo = individuo;
+        this.acopagnates = acopagnates;
+        this.matriculas = matriculas;
     }
+
+    public Sospechoso(String documento, String nombre, String apellidos, String antecedentes, String hechos, Sospechoso individuo) {
+        this.documento = documento;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.antecedentes = antecedentes;
+        this.hechos = hechos;
+        this.individuo = individuo;
         
+        this.direcciones = new ArrayList<>();
+        this.correos = new ArrayList<>();
+        this.telefonos  = new ArrayList<>();
+        this.acopagnates = new ArrayList<>();
+        this.matriculas  = new ArrayList<>();      
+    }
+    
+    
+    
+    
+    
+
     public long getId() {
         return id;
     }
@@ -98,6 +147,32 @@ public class Sospechoso implements Serializable {
         return antecedentes;
     }
 
+    public Sospechoso getIndividuo() {
+        return individuo;
+    }
+
+    public void setIndividuo(Sospechoso individuo) {
+        this.individuo = individuo;
+    }
+
+  
+
+    public List<Sospechoso> getAcopagnates() {
+        return acopagnates;
+    }
+
+    public void setAcopagnates(List<Sospechoso> acopagnates) {
+        this.acopagnates = acopagnates;
+    }
+
+    public static long getSerialVersoinUID() {
+        return serialVersoinUID;
+    }
+
+    public List<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
     public void setAntecedentes(String antecedentes) {
         this.antecedentes = antecedentes;
     }
@@ -107,15 +182,6 @@ public class Sospechoso implements Serializable {
     }
 
     public void setHechos(String hechos) {
-        this.hechos = hechos;
-    }
-
-
-    public Sospechoso(String documento, String nombre, String apellidos, String antecedentes, String hechos) {
-        this.documento = documento;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.antecedentes = antecedentes;
         this.hechos = hechos;
     }
 
@@ -142,12 +208,99 @@ public class Sospechoso implements Serializable {
     public void setCorreos(List<Correo> correos) {
         this.correos = correos;
     }
+    
+  
+      public void addAcopagnate(Sospechoso s ){    
+        if(!acopagnates.contains(s)){
+            acopagnates.add(s); 
+            s.setIndividuo(this);
+        }
+    }
 
+    
+    
+    public void addDireccion(Direccion d ){    
+        if(!direcciones.contains(d)){
+            direcciones.add(d); 
+            d.setSospechoso(this);  
+        }
+    }
+    
+    
+    public void addCorreo(Correo d ){    
+        if(!correos.contains(d)){
+            correos.add(d); 
+            d.setSospechoso(this);  
+        }
+    }
+    
+    
+    public void addMatriculas(Matricula m){
+        
+        if(!matriculas.contains(m)){
+            matriculas.add(m);
+            m.setSospechoso(this);
+        }
+  
+    }
  
+    
+    
+    public void addTelefonos(Telefono t){
+        if(!telefonos.contains(t)){
+            telefonos.add(t);
+            t.setSospechoso(this);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 53 * hash + Objects.hashCode(this.documento);
+        hash = 53 * hash + Objects.hashCode(this.nombre);
+        hash = 53 * hash + Objects.hashCode(this.apellidos);
+        hash = 53 * hash + Objects.hashCode(this.antecedentes);
+        hash = 53 * hash + Objects.hashCode(this.hechos);
+        hash = 53 * hash + Objects.hashCode(this.direcciones);
+        hash = 53 * hash + Objects.hashCode(this.correos);
+        hash = 53 * hash + Objects.hashCode(this.telefonos);
+        hash = 53 * hash + Objects.hashCode(this.individuo);
+        hash = 53 * hash + Objects.hashCode(this.acopagnates);
+        hash = 53 * hash + Objects.hashCode(this.matriculas);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Sospechoso other = (Sospechoso) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.documento, other.documento)) {
+            return false;
+        }
+        return true;
+    }
+    
    
+    
+    
+    
     @Override
     public String toString() {
-        return "Sospechoso{" + "id=" + id + ", documento=" + documento + ", nombre=" + nombre + ", apellidos=" + apellidos + ", antecedentes=" + antecedentes + ", hechos=" + hechos + '}';
+        return "Sospechoso{" + "id=" + id + ", documento=" + documento +
+               ", nombre=" + nombre + ", apellidos=" + apellidos +
+               ", antecedentes=" + antecedentes + ", hechos=" + hechos + '}';
     }
 
     

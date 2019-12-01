@@ -5,6 +5,7 @@
  */
 package com.mycompany.comisariaorm.Modelo;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +22,7 @@ import javax.persistence.Table;
 @Table(name="telefonos")
 public class Telefono {
     @Id
-    @Column(name="id_telefono")
+    @Column(name="id_telefono", updatable = false, nullable = false)
     private long id;
 
     @Column(name="telefono")
@@ -39,6 +40,21 @@ public class Telefono {
         this.telefono = telefono;
         this.sospechoso = sospechoso;
     }
+
+    public Telefono(String telefono, Sospechoso sospechoso) {
+        this.telefono = telefono;
+        this.sospechoso = sospechoso;
+    }
+
+    public Telefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    
+    
+    
+    
+    
 
     public long getId() {
         return id;
@@ -62,6 +78,39 @@ public class Telefono {
 
     public void setSospechoso(Sospechoso sospechoso) {
         this.sospechoso = sospechoso;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 79 * hash + Objects.hashCode(this.telefono);
+        hash = 79 * hash + Objects.hashCode(this.sospechoso);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Telefono other = (Telefono) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.telefono, other.telefono)) {
+            return false;
+        }
+        if (!Objects.equals(this.sospechoso, other.sospechoso)) {
+            return false;
+        }
+        return true;
     }
     
     
