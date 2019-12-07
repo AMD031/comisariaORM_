@@ -23,17 +23,14 @@ public class GestionCeldas extends DefaultTableCellRenderer{
 		
 	}
 
-	/**
-	 * Constructor explicito con el tipo de dato que tendr� la celda
-	 * @param tipo
-	 */
+	
 	public GestionCeldas(String tipo){
 		this.tipo=tipo;
 	}
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
 
-        //si el tipo es icono entonces valida cual icono asignar a la etiqueta.
+      
         if( tipo.equals("icono"))
         {
             if( String.valueOf(value).equals("PERFIL") )
@@ -45,8 +42,8 @@ public class GestionCeldas extends DefaultTableCellRenderer{
             	//label.setIcon(iconoGuardar);
             }
             label.setHorizontalAlignment( JLabel.LEFT );
-            label.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-             //return new JTree();
+          label.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+          
            return label;
         }
         

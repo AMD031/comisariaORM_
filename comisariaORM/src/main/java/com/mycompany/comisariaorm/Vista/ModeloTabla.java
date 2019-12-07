@@ -8,11 +8,7 @@ public class ModeloTabla extends DefaultTableModel{
 	String[] titulos;
 	Object[][] datos;
 	
-	/**
-	 * Determina el modelo con el que se va a construir la tabla
-	 * @param datos
-	 * @param titulos
-	 */
+
 	public ModeloTabla(Object[][] datos, String[] titulos) {
 		super();
 		this.titulos=titulos;
@@ -28,12 +24,14 @@ public class ModeloTabla extends DefaultTableModel{
         @Override
 	public boolean isCellEditable (int row, int column)
 	{
-            boolean editable =false;
-          if (column==Utilidades.ID || column == Utilidades.PERFIL || column == Utilidades.EVENTO){   
-	     return false; 
+            boolean editable =true;
+          if (column==Utilidades.ID || column == Utilidades.PERFIL || column == Utilidades.EVENTO ||
+              column == Utilidades.TELEFONOS || column == Utilidades.MATRICULAS || column == Utilidades.CORREOS ||
+              column == Utilidades.DOMICILIOS){   
+                editable =false; 
 	    }
             
-           return true;
+           return editable;
  
 	}
 

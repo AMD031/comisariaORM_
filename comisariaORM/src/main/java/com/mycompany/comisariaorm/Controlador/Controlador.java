@@ -6,7 +6,9 @@
 package com.mycompany.comisariaorm.Controlador;
 
 import ConsultasH2.ConsultaSospechoso;
+import com.mycompany.comisariaorm.Modelo.Matricula;
 import com.mycompany.comisariaorm.Modelo.Sospechoso;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,20 +16,15 @@ import java.util.List;
  * @author Your Name <Antonio Martinez Diaz>
  */
 public class Controlador {
-    
-    
     public static List<Sospechoso> devolverSospechosos(){
         return  ConsultaSospechoso.devolverSospechosos();
     }
     
-    
     public static long idSospechoso(int indice){
-        
        long id = -1;
         if( ConsultaSospechoso.devolverSospechosos().get(indice)!=null){
            id = ConsultaSospechoso.devolverSospechosos().get(indice).getId();
         }
-        
         return  id;
     }
 
@@ -80,6 +77,42 @@ public class Controlador {
        }
        return resultado;
      }
+
+    public static  List<? extends  Object> obtenerCampoMulB(String campo, long indice){
+      List<? extends  Object> resultado =null;   
+      if(campo.equals("matriculas")){
+          resultado = ConsultaSospechoso.matriculasSospechoso(indice);
+       }
+      
+      if(campo.equals("domicilios")){
+        resultado = ConsultaSospechoso.direccionesSospechoso(indice);
+      }
+      
+       if(campo.equals("telefonos")){
+         resultado = ConsultaSospechoso.telefonosSospechoso(indice);
+       }
+       
+       if(campo.equals("correos")){
+         resultado = ConsultaSospechoso.correosSospechoso(indice);
+       }
+      
+        if(campo.equals("dirrecciones")){
+         resultado = ConsultaSospechoso.direccionesSospechoso(indice);
+       }
+       return resultado;
+     }
+     
+    public static void actualizarMo(Long in, int campo, String cambio){
+      ConsultaSospechoso.actulizarCampoMo(in, campo, cambio);   
+    }
+    
+    public static void actualizarMul(Long in, int campo, List<String> datos){
+        ConsultaSospechoso.actulizarCampoMul(in, campo, datos);
+    }
+    
+    public static void borrarSospechoso(long id){
+       ConsultaSospechoso.eliminarSospechoso(id);
+    }
     
     
     

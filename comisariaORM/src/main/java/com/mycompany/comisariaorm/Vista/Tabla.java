@@ -15,33 +15,41 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import ConsultasH2.ConsultaSospechoso;
 import com.mycompany.comisariaorm.Controlador.Controlador;
+import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-
 /**
  *
  * @author Your Name <Antonio Martinez Diaz>
  */
-public class Tabla extends javax.swing.JFrame implements MouseListener, TableModelListener{
+public class Tabla extends javax.swing.JFrame implements MouseListener, TableModelListener {
 
     /**
      * Creates new form Tabla
      */
     private ModeloTabla modelo;//
-    private ArrayList<String> titulosList;
-    private int filasTabla;
-    private int columnasTabla;
-    
+    private static ArrayList<String> titulosList;
     public Tabla() {
-
         initComponents();
-       	construirTabla();
+        construirTabla();
         Tsospechosos.addMouseListener(this);
         Tsospechosos.getModel().addTableModelListener(this);
-   
+
+    }
+
+    private void iniciaMAtualizar(List<? extends Object> s, int columna, long id) {
+        JDialog frame = new JDialog(this, "Actualiza", true);
+        frame.setLocation(this.getX(), this.getY());
+        ActualizarMul i = new ActualizarMul(id, columna);
+        i.iniciaModelo(s, columna);
+        frame.getContentPane().add(i);
+        frame.pack();
+        frame.setVisible(true);
+        construirTabla();
+        
     }
 
     /**
@@ -54,12 +62,33 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        Tsospechosos = new javax.swing.JTable();
         TituloTablaSospechosos = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Tsospechosos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 948, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 227, Short.MAX_VALUE)
+        );
+
+        TituloTablaSospechosos.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        TituloTablaSospechosos.setText("Tabla  Sospechosos");
+
+        jButton1.setText("Nuevo sospechoso");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         Tsospechosos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -74,44 +103,23 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
         ));
         jScrollPane1.setViewportView(Tsospechosos);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(205, 205, 205))
-        );
-
-        TituloTablaSospechosos.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        TituloTablaSospechosos.setText("Tabla  Sospechosos");
-
-        jButton1.setText("Nuevo sospechoso");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(240, 240, 240)
-                        .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1)))
-                .addContainerGap(331, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(234, 234, 234)
+                                .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,8 +128,10 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
                 .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(176, 176, 176))
         );
 
@@ -129,133 +139,137 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-          Object fila [] = new Object[titulosList.size()];
-   
-        
+        Object fila[] = new Object[titulosList.size()];
         modelo.addRow(fila);
-        
-        JDialog frame = new JDialog(this,"Insertar", true);
+        JDialog frame = new JDialog(this, "Insertar", true);
+        frame.setLocation(this.getX(), this.getY());
         Insertar i = new Insertar();
         frame.getContentPane().add(i);
         frame.pack();
         frame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-	
-    private void construirTabla() {
-	        titulosList=new ArrayList<>();
-                titulosList.add("Id");
-		titulosList.add("Nombre");
-                titulosList.add("Apellidos");
-                titulosList.add("Documentos");
-                titulosList.add("Matriculas");
-                titulosList.add("Domicilios");
-                titulosList.add("Telefonos");
-                titulosList.add("");
-                titulosList.add("");
-                
-		//se asignan las columnas al arreglo para enviarse al momento de construir la tabla
-		String titulos[] = new String[titulosList.size()];
-		for (int i = 0; i < titulos.length; i++) {
-			titulos[i]=titulosList.get(i);
-		}
-		
-		Object[][] data =obtenerMatrizDatos(titulosList);
-		construirTabla(titulos,data);
-	}
+
+   public void construirTabla() {
+        titulosList = new ArrayList<>();
+        titulosList.add("Id");
+        titulosList.add("Nombre");
+        titulosList.add("Apellidos");
+        titulosList.add("Documentos");
+        titulosList.add("Matriculas");
+        titulosList.add("Domicilios");
+        titulosList.add("Telefonos");
+        titulosList.add("Correos");
+        titulosList.add("");
+        titulosList.add("");
+
+
+        String titulos[] = new String[titulosList.size()];
+        for (int i = 0; i < titulos.length; i++) {
+            titulos[i] = titulosList.get(i);
+        }
+
+       Object[][] data = obtenerMatrizDatos(titulosList);
+        construirTabla(titulos, data);
+    }
+
     
     
-	private Object[][] obtenerMatrizDatos(ArrayList<String> titulosList) {
-		String informacion[][] = new String[Controlador.devolverSospechosos().size()][titulosList.size()];
-		
-		for (int x = 0; x < informacion.length; x++) {
-                
-                    long id = Controlador.idSospechoso(x);
-                    informacion[x][Utilidades.ID] = Controlador.obtenerCampoMo("id", x) ;
-                    informacion[x][Utilidades.NOMBRE] = Controlador.obtenerCampoMo("nombre", x) + "";
-                    informacion[x][Utilidades.APELLIDOS] = Controlador.obtenerCampoMo("apellidos", x) + "";
-                    informacion[x][Utilidades.DOCUMENTO] = Controlador.obtenerCampoMo("documento", x) + "";
-                    informacion[x][Utilidades.MATRICULAS] = Controlador.obtenerCampoMul("matriculas", id);
-                    informacion[x][Utilidades.DOMICILIOS] = Controlador.obtenerCampoMul("domicilios", id);
-                    informacion[x][Utilidades.TELEFONOS] = Controlador.obtenerCampoMul("telefonos", id);;
-                    informacion[x][Utilidades.PERFIL] = "PERFIL";
-	            informacion[x][Utilidades.EVENTO] = "EVENTO";
-                }
-		return informacion;
-	}
-	
+    private  Object[][] obtenerMatrizDatos(ArrayList<String> titulosList) {
+        String informacion[][] = new String[Controlador.devolverSospechosos().size()][titulosList.size()];
+        for (int x = 0; x < informacion.length; x++) {
+            long id = Controlador.idSospechoso(x);
+            informacion[x][Utilidades.ID] = Controlador.obtenerCampoMo("id", x);
+            informacion[x][Utilidades.NOMBRE] = Controlador.obtenerCampoMo("nombre", x) + "";
+            informacion[x][Utilidades.APELLIDOS] = Controlador.obtenerCampoMo("apellidos", x) + "";
+            informacion[x][Utilidades.DOCUMENTO] = Controlador.obtenerCampoMo("documento", x) + "";
+            informacion[x][Utilidades.MATRICULAS] = Controlador.obtenerCampoMul("matriculas", id);
+            informacion[x][Utilidades.DOMICILIOS] = Controlador.obtenerCampoMul("domicilios", id);
+            informacion[x][Utilidades.TELEFONOS] = Controlador.obtenerCampoMul("telefonos", id);
+            informacion[x][Utilidades.CORREOS] = Controlador.obtenerCampoMul("correos", id);;
+            informacion[x][Utilidades.PERFIL] = "PERFIL";
+            informacion[x][Utilidades.EVENTO] = "EVENTO";
+        }
+        return informacion;
+    }
 
-	private void construirTabla(String[] titulos, Object[][] data) {
-		modelo=new ModeloTabla(data, titulos);
-		//se asigna el modelo a la tabla
-		Tsospechosos.setModel(modelo);
-		
-		filasTabla=Tsospechosos.getRowCount();
-		columnasTabla=Tsospechosos.getColumnCount();
-		
-		Tsospechosos.getColumnModel().getColumn(Utilidades.PERFIL).setCellRenderer(new GestionCeldas("icono"));
-		Tsospechosos.getColumnModel().getColumn(Utilidades.EVENTO).setCellRenderer(new GestionCeldas("icono"));
-		Tsospechosos.getColumnModel().getColumn(Utilidades.PERFIL).setPreferredWidth(10);
-		Tsospechosos.getColumnModel().getColumn(Utilidades.EVENTO).setPreferredWidth(10);
-		
+    private void construirTabla(String[] titulos, Object[][] data) {
+        modelo = new ModeloTabla(data, titulos);
+        Tsospechosos.setModel(modelo);
+        Tsospechosos.getColumnModel().getColumn(Utilidades.PERFIL).setCellRenderer(new GestionCeldas("icono"));
+        Tsospechosos.getColumnModel().getColumn(Utilidades.EVENTO).setCellRenderer(new GestionCeldas("icono"));
+        Tsospechosos.getColumnModel().getColumn(Utilidades.PERFIL).setPreferredWidth(10);
+        Tsospechosos.getColumnModel().getColumn(Utilidades.EVENTO).setPreferredWidth(10);
+    }
 
+    private Long idTabla(int fila) {
+        String id = (String) modelo.getValueAt(fila, 0);
+        long Id = Long.parseLong(id);
+        return Id;
+    }
 
-	}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int fila = Tsospechosos.rowAtPoint(e.getPoint());
+        int columna = Tsospechosos.columnAtPoint(e.getPoint());
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		int fila = Tsospechosos.rowAtPoint(e.getPoint());
-		int columna = Tsospechosos.columnAtPoint(e.getPoint());
-	
-	
-		if (columna==Utilidades.PERFIL) {
-			validarSeleccionMouse(fila);      
-		}else if (columna==Utilidades.EVENTO){
-		   JOptionPane.showMessageDialog(null, "Evento del otro icono");
-		}
-		
-	}
+        if (columna == Utilidades.PERFIL) {
+            validarSeleccionMouse(fila);
+        } else if (columna == Utilidades.EVENTO) {
+            long id = idTabla(fila);
+            modelo.removeRow(fila);
+            ConsultaSospechoso.eliminarSospechoso(id);
+           construirTabla();
+        } else if (columna == Utilidades.TELEFONOS) {
+            if (Controlador.obtenerCampoMulB("telefonos", idTabla(fila)) != null) {
+                iniciaMAtualizar(Controlador.obtenerCampoMulB("telefonos", idTabla(fila)), Utilidades.TELEFONOS, idTabla(fila));
+            }
+        } else if (columna == Utilidades.CORREOS) {
+            if (Controlador.obtenerCampoMulB("correos", idTabla(fila)) != null) {
+                iniciaMAtualizar(Controlador.obtenerCampoMulB("correos", idTabla(fila)), Utilidades.CORREOS, idTabla(fila) );
+            }
+        } else if (columna == Utilidades.MATRICULAS) {
+            if (Controlador.obtenerCampoMulB("matriculas", idTabla(fila)) != null) {
+                iniciaMAtualizar(Controlador.obtenerCampoMulB("matriculas", idTabla(fila)), Utilidades.MATRICULAS,idTabla(fila));
+            }
+        } else if (columna == Utilidades.DOMICILIOS) {
+            if (Controlador.obtenerCampoMulB("domicilios", idTabla(fila)) != null) {
+                iniciaMAtualizar(Controlador.obtenerCampoMulB("domicilios", idTabla(fila)), Utilidades.DOMICILIOS,idTabla(fila));
+            }
+        }
 
-	private void validarSeleccionMouse(int fila) {
-		Utilidades.filaSeleccionada=fila;
-		String info="INFO PERSONA\n";
-		info+="Documento:"+"\n";
-		info+="Nombre: "+"\n";
-		
-		JOptionPane.showMessageDialog(null, info);
-	}
+    }
 
-	
+    private void validarSeleccionMouse(int fila) {
+        Utilidades.filaSeleccionada = fila;
+        String info = "INFO PERSONA\n";
+        info += "Documento:" + "\n";
+        info += "Nombre: " + "\n";
+        JOptionPane.showMessageDialog(null, info);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
         
-        
-        
+    }
 
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-    
-   
-    
     /**
      * @param args the command line arguments
      */
@@ -290,23 +304,11 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
             }
         });
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
- 
-    
-  
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel TituloTablaSospechosos;
-    private javax.swing.JTable Tsospechosos;
+    private static javax.swing.JTable Tsospechosos;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -314,12 +316,17 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
 
     @Override
     public void tableChanged(TableModelEvent e) {
-       
-        System.out.println( modelo.getValueAt(e.getFirstRow(), 0));   
-        System.out.println(  modelo.getColumnCount());
-        
-     
-      
-        
+
+        if (e.getColumn() == Utilidades.NOMBRE
+                || e.getColumn() == Utilidades.APELLIDOS
+                || e.getColumn() == Utilidades.DOCUMENTO) {
+
+            String id = (String) modelo.getValueAt(e.getFirstRow(), 0);
+            System.out.println(modelo.getValueAt(e.getFirstRow(), 0));
+            Long Id = Long.parseLong(id);
+            String cambio = (String) modelo.getValueAt(e.getFirstRow(), e.getColumn());
+            Controlador.actualizarMo(Id, (Integer.valueOf(e.getColumn())), cambio);
+        }
+
     }
 }

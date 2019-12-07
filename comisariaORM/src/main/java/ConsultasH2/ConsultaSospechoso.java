@@ -5,6 +5,7 @@ import com.mycompany.comisariaorm.Modelo.Direccion;
 import com.mycompany.comisariaorm.Modelo.Matricula;
 import com.mycompany.comisariaorm.Modelo.Sospechoso;
 import com.mycompany.comisariaorm.Modelo.Telefono;
+import com.mycompany.comisariaorm.Vista.Utilidades;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -35,6 +36,7 @@ public class ConsultaSospechoso{
         return matriculas;
        }
     
+    
        public static List<Telefono> telefonosSospechoso(long  indice){
         List<Telefono>telefonos=null;
         EntityManager manager = Conexion.devolverConexion().createEntityManager();
@@ -49,14 +51,13 @@ public class ConsultaSospechoso{
         return telefonos;
        }
    
-    
        public static List<Correo> correosSospechoso(long  indice){
         List<Correo>correos=null;
         EntityManager manager = Conexion.devolverConexion().createEntityManager();
         manager.getTransaction().begin();  
         Sospechoso so = manager.find(Sospechoso.class, indice);
-         if(so != null){
-            so.getTelefonos().size();
+            if(so != null){
+            so.getCorreos().size();
             correos = so.getCorreos();
          }
         manager.getTransaction().commit();
@@ -92,9 +93,11 @@ public class ConsultaSospechoso{
     
     
     public static void eliminarSospechoso(long indice){
+        System.out.println(indice);
         EntityManager manager = Conexion.devolverConexion().createEntityManager();
         manager.getTransaction().begin();
         Sospechoso s=manager.find(Sospechoso.class, indice);
+  
         if(s!=null){
           manager.remove(s);
         }
@@ -114,7 +117,76 @@ public class ConsultaSospechoso{
     }
     
     
-    
+    public static void actulizarCampoMo(Long indice, int campo, String cambio){
+        
+        EntityManager manager = Conexion.devolverConexion().createEntityManager();
+        manager.getTransaction().begin();
+         Sospechoso so = manager.find(Sospechoso.class, indice);
+            if(so != null){
+                if(campo == Utilidades.NOMBRE){
+                    so.setNombre(cambio);
+                }
+                if(campo == Utilidades.APELLIDOS){
+                    so.setApellidos(cambio);
+                }
+                
+                if(campo ==Utilidades.DOCUMENTO){
+                    so.setDocumento(cambio);
+                }
+         }
+        manager.getTransaction().commit();
+        manager.close();
+        
+        
+    }
+
+    public static void actulizarCampoMul(Long in, int campo, List<String> datos) {
+        EntityManager manager = Conexion.devolverConexion().createEntityManager();
+        manager.getTransaction().begin();
+            Sospechoso so = manager.find(Sospechoso.class, in);
+          
+            
+            if(so != null){
+                
+                if(campo == Utilidades.MATRICULAS){
+                    so.getMatriculas().clear();
+                    if(datos !=null){
+                        for(String s : datos){
+                            so.addMatriculas(new Matricula(s));
+                        }
+                    }
+                }
+                
+                if(campo == Utilidades.DOMICILIOS){
+                    so.getCorreos().clear();
+                    if(datos !=null){
+                        for(String s : datos){
+                            so.addDireccion(new Direccion(s));
+                        }
+                    }
+                }
+                
+                if(campo ==Utilidades.TELEFONOS){
+                    so.getTelefonos().clear();
+                    if(datos !=null){
+                        for(String s : datos){
+                            so.addTelefonos(new Telefono(s));
+                        }
+                    }
+                }
+                if(campo == Utilidades.CORREOS){
+                    so.getCorreos().clear();
+                    if(datos !=null){
+                        for(String s : datos){
+                            so.addCorreo(new Correo(s));
+                        }
+                    }
+
+                }  
+         }
+        manager.getTransaction().commit();
+        manager.close();
+    }
     
     
     

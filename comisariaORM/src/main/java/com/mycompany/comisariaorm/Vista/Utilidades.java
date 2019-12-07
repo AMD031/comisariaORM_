@@ -18,9 +18,11 @@ public class Utilidades {
     public static final int MATRICULAS = 4;
     public static final int DOMICILIOS = 5;
     public static final int TELEFONOS = 6;
-    public static final int PERFIL = 7;
-    public static final int EVENTO = 8;
+    public static final int CORREOS = 7;
+    public static final int PERFIL = 8;
+    public static final int EVENTO = 9;
     public static int filaSeleccionada;
+   
     
     
 }
