@@ -107,7 +107,7 @@ public class Direccion implements Serializable{
     
     @Override
     public String toString() {
-        return "Direccion{" + "id_direccion=" + id_direccion + ", direcion=" + direcion + '}';
+        return this.direcion;
     }
     
     

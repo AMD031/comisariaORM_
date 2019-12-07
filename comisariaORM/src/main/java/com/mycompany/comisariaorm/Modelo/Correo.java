@@ -80,16 +80,11 @@ public class Correo {
     }
 
     @Override
-    public String toString() {
-        return "Correo{" + "id_correo=" + id_correo + ", correo=" + correo + ", sospechoso=" + sospechoso + '}';
-    }
-
-    @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 29 * hash + (int) (this.id_correo ^ (this.id_correo >>> 32));
-        hash = 29 * hash + Objects.hashCode(this.correo);
-        hash = 29 * hash + Objects.hashCode(this.sospechoso);
+        int hash = 7;
+        hash = 97 * hash + (int) (this.id_correo ^ (this.id_correo >>> 32));
+        hash = 97 * hash + Objects.hashCode(this.correo);
+        hash = 97 * hash + Objects.hashCode(this.sospechoso);
         return hash;
     }
 
@@ -105,13 +100,31 @@ public class Correo {
             return false;
         }
         final Correo other = (Correo) obj;
+        if (this.id_correo != other.id_correo) {
+            return false;
+        }
+        if (!Objects.equals(this.correo, other.correo)) {
+            return false;
+        }
+        if (!Objects.equals(this.sospechoso, other.sospechoso)) {
+            return false;
+        }
         return true;
     }
+
+ 
+
+
    
    
    
    
    
+       @Override
+    public String toString() {
+        return  this.correo;
+    }
+
   
   
   

@@ -65,7 +65,7 @@ public class Test2 {
         int height = pantalla.height;
         int width = pantalla.width;
         frame.setSize(width / 2, height / 2);
-      frame.setLocationRelativeTo(null);
+        frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true); //y lo mostramos

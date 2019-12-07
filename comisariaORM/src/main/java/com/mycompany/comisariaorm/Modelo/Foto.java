@@ -9,9 +9,11 @@ import java.io.Serializable;
 import java.sql.Blob;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,11 +35,29 @@ public class Foto implements Serializable {
     @Column(name="imagen")
     private byte[] imagen;
 
-    public Foto(byte[] imagen) {
+   @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "id_sospechoso")
+   private Sospechoso sospechoso;
+
+    public Foto(byte[] imagen, Sospechoso sospechoso) {
         this.imagen = imagen;
+        this.sospechoso = sospechoso;
     }
 
-    public Foto() {
+    public Foto(long id_foto, byte[] imagen, Sospechoso sospechoso) {
+        this.id_foto = id_foto;
+        this.imagen = imagen;
+        this.sospechoso = sospechoso;
+    }
+
+    public Sospechoso getSospechoso() {
+        return sospechoso;
+    }
+
+    public void setSospechoso(Sospechoso sospechoso) {
+        this.sospechoso = sospechoso;
+    }
+     public Foto() {
     }
 
     public long getId_foto() {

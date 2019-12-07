@@ -10,6 +10,8 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,11 +25,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name ="matriculas")
 public class Matricula implements Serializable{
+    
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id_matricula", updatable = false, nullable = false)
     private long id_matricula;
     @Column(name="matricula")
     private String matricula;
+    
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_sospechoso")
@@ -111,7 +116,7 @@ public class Matricula implements Serializable{
     
     @Override
     public String toString() {
-        return "Matricula{" + "id_matricula=" + id_matricula + ", matricula=" + matricula + '}';
+        return  this.matricula;
     }
     
     

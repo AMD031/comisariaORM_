@@ -11,12 +11,15 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 /**
@@ -33,7 +36,7 @@ public class Sospechoso implements Serializable {
     @Column(name="id_sospechoso" , updatable = false, nullable = false)        
     long id;
     
-    @Column(name = "documentos")
+    @Column(name = "documento")
     private String documento;
     
     @Column(name = "nombre")
@@ -61,12 +64,16 @@ public class Sospechoso implements Serializable {
     @JoinColumn(name="id_individuo")
     private Sospechoso individuo;
     
-    @OneToMany(mappedBy = "individuo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "individuo")
     private List<Sospechoso> acopagnates; 
     
     
     @OneToMany(mappedBy = "sospechoso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Matricula> matriculas; 
+    @OneToOne(mappedBy = "sospechoso", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    private Foto foto;
+    
+
 
     public Sospechoso() {
         this.direcciones = new ArrayList<>();
@@ -76,7 +83,7 @@ public class Sospechoso implements Serializable {
         this.matriculas  = new ArrayList<>();       
     }
 
-    public Sospechoso(String documento, String nombre, String apellidos, String antecedentes, String hechos, List<Direccion> direcciones, List<Correo> correos, List<Telefono> telefonos, Sospechoso individuo, List<Sospechoso> acopagnates, List<Matricula> matriculas) {
+    public Sospechoso(String documento, String nombre, String apellidos, String antecedentes, String hechos, List<Direccion> direcciones, List<Correo> correos, List<Telefono> telefonos, Sospechoso individuo, List<Sospechoso> acopagnates, List<Matricula> matriculas,Foto foto) {
         this.documento = documento;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -88,9 +95,10 @@ public class Sospechoso implements Serializable {
         this.individuo = individuo;
         this.acopagnates = acopagnates;
         this.matriculas = matriculas;
+        this.foto = foto;
     }
 
-    public Sospechoso(String documento, String nombre, String apellidos, String antecedentes, String hechos, Sospechoso individuo) {
+    public Sospechoso(String documento, String nombre, String apellidos, String antecedentes, String hechos, Sospechoso individuo,Foto foto) {
         this.documento = documento;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -102,13 +110,20 @@ public class Sospechoso implements Serializable {
         this.correos = new ArrayList<>();
         this.telefonos  = new ArrayList<>();
         this.acopagnates = new ArrayList<>();
-        this.matriculas  = new ArrayList<>();      
+        this.matriculas  = new ArrayList<>();
+        this.foto = foto;
     }
-    
-    
-    
-    
-    
+
+    public Foto getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Foto foto) {
+        this.foto = foto;
+        if(foto !=null){
+            foto.setSospechoso(this);
+        }  
+    }
 
     public long getId() {
         return id;
@@ -139,6 +154,10 @@ public class Sospechoso implements Serializable {
         return apellidos;
     }
 
+    public void setMatriculas(List<Matricula> matriculas) {
+        this.matriculas = matriculas;
+    }
+
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
@@ -154,8 +173,6 @@ public class Sospechoso implements Serializable {
     public void setIndividuo(Sospechoso individuo) {
         this.individuo = individuo;
     }
-
-  
 
     public List<Sospechoso> getAcopagnates() {
         return acopagnates;
@@ -236,7 +253,6 @@ public class Sospechoso implements Serializable {
     
     
     public void addMatriculas(Matricula m){
-        
         if(!matriculas.contains(m)){
             matriculas.add(m);
             m.setSospechoso(this);
@@ -292,7 +308,11 @@ public class Sospechoso implements Serializable {
         return true;
     }
     
-   
+   @PreRemove
+   public void nulificarComplices(){
+       acopagnates.forEach(
+          (v)->v.setIndividuo(null));
+      }
     
     
     

@@ -6,9 +6,12 @@
 package com.mycompany.comisariaorm.Modelo;
 
 import java.util.Objects;
+import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,6 +25,7 @@ import javax.persistence.Table;
 @Table(name="telefonos")
 public class Telefono {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id_telefono", updatable = false, nullable = false)
     private long id;
 
@@ -117,7 +121,7 @@ public class Telefono {
 
     @Override
     public String toString() {
-        return "Telefono{" + "id=" + id + ", telefono=" + telefono + '}';
+        return this.telefono ;
     }
     
     
