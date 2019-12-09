@@ -6,21 +6,22 @@
 package com.mycompany.comisariaorm.Vista;
 
 import com.mycompany.comisariaorm.Controlador.Controlador;
-import com.mycompany.comisariaorm.Modelo.Matricula;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JTable;
+
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+
 
 /**
  * @author Your Name <Antonio Martinez Diaz>
  */
-public class ActualizarMul extends javax.swing.JPanel {
+public class ActualizarMul extends javax.swing.JPanel implements TableModelListener{
     public ArrayList<String> datosTabla;
     private DefaultTableModel model;
     
@@ -29,17 +30,15 @@ public class ActualizarMul extends javax.swing.JPanel {
      */
     private long id;
     private int campo;
-    
-    
     public ActualizarMul(long id, int campo) {
         datosTabla = new ArrayList();
         initComponents();
         this.id = id;
         this.campo = campo; 
+        this.Datos.getModel().addTableModelListener(this);
     }
     
     public ArrayList<String>obtenerDatosTabla(){
-       
         for (int i =0; i<model.getRowCount(); i++ ) {
            if( model.getValueAt(i, 0)!=null && !(((String) model.getValueAt(i, 0)).equals(""))){
               datosTabla.add( (String) model.getValueAt(i, 0) );
@@ -59,7 +58,6 @@ public class ActualizarMul extends javax.swing.JPanel {
     }
 
     public void iniciaModelo(List<? extends Object> elementos, int columna) {
-
         if (Utilidades.MATRICULAS == columna) {
             nombreColumna1("Matricula");
         }
@@ -75,6 +73,7 @@ public class ActualizarMul extends javax.swing.JPanel {
              nombreColumna1("Correos");
         }
         model = (DefaultTableModel) Datos.getModel();
+
         for (Object e : elementos) {
             model.addRow(new Object[]{e.toString()});
         }
@@ -95,13 +94,14 @@ public class ActualizarMul extends javax.swing.JPanel {
         Datos = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         Datos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1"
+                "Datos"
             }
         ));
         jScrollPane1.setViewportView(Datos);
@@ -120,30 +120,40 @@ public class ActualizarMul extends javax.swing.JPanel {
             }
         });
 
+        jButton3.setText("Eliminar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
+                .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -154,16 +164,27 @@ public class ActualizarMul extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         obtenerDatosTabla();
         Controlador.actualizarMul(this.id, this.campo, datosTabla);
-        
-        
-        
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        model.removeRow( Datos.getSelectionModel().getLeadSelectionIndex());       
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Datos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void tableChanged(TableModelEvent e) {
+     
+            System.out.println(e.getFirstRow());
+    }
+
+  
+ 
 }

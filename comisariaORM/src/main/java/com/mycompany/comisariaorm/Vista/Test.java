@@ -89,10 +89,6 @@ public class Test {
         
         EntityManager manager = emf.createEntityManager();
         manager.getTransaction().begin();
-          
-     
-        
-        
         Sospechoso so = manager.find(Sospechoso.class, n);
       
            if(so !=null){

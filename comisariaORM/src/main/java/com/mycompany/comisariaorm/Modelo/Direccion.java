@@ -80,10 +80,9 @@ public class Direccion implements Serializable{
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 61 * hash + (int) (this.id_direccion ^ (this.id_direccion >>> 32));
-        hash = 61 * hash + Objects.hashCode(this.direcion);
-        hash = 61 * hash + Objects.hashCode(this.sospechoso);
+        int hash = 5;
+        hash = 13 * hash + (int) (this.id_direccion ^ (this.id_direccion >>> 32));
+        hash = 13 * hash + Objects.hashCode(this.direcion);
         return hash;
     }
 
@@ -99,11 +98,15 @@ public class Direccion implements Serializable{
             return false;
         }
         final Direccion other = (Direccion) obj;
+        if (this.id_direccion != other.id_direccion) {
+            return false;
+        }
+        if (!Objects.equals(this.direcion, other.direcion)) {
+            return false;
+        }
         return true;
     }
 
-
-    
     
     @Override
     public String toString() {

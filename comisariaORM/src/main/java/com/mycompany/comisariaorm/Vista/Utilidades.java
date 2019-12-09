@@ -19,9 +19,16 @@ public class Utilidades {
     public static final int DOMICILIOS = 5;
     public static final int TELEFONOS = 6;
     public static final int CORREOS = 7;
-    public static final int PERFIL = 8;
-    public static final int EVENTO = 9;
+    public static final int DETALLES = 8;
+    public static final int BORRAR = 9;
+    public static final int FOTO = 10;
+    public static final int COMPLICE = 11;
+    
     public static int filaSeleccionada;
+    
+    //fuera de tabla
+    public static final int HECHOS = 20;
+    public static final int ANTECEDENTES =30;
    
     
     

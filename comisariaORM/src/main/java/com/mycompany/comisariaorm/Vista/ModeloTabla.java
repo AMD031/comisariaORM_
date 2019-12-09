@@ -25,9 +25,9 @@ public class ModeloTabla extends DefaultTableModel{
 	public boolean isCellEditable (int row, int column)
 	{
             boolean editable =true;
-          if (column==Utilidades.ID || column == Utilidades.PERFIL || column == Utilidades.EVENTO ||
+          if (column==Utilidades.ID || column == Utilidades.DETALLES || column == Utilidades.BORRAR ||
               column == Utilidades.TELEFONOS || column == Utilidades.MATRICULAS || column == Utilidades.CORREOS ||
-              column == Utilidades.DOMICILIOS){   
+              column == Utilidades.DOMICILIOS || column == Utilidades.FOTO){   
                 editable =false; 
 	    }
             

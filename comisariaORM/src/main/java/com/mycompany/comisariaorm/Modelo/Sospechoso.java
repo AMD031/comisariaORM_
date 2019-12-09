@@ -70,7 +70,9 @@ public class Sospechoso implements Serializable {
     
     @OneToMany(mappedBy = "sospechoso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Matricula> matriculas; 
-    @OneToOne(mappedBy = "sospechoso", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    
+    @OneToOne(cascade = {CascadeType.ALL})//todos los cambios en cascada
+    @JoinColumn(name = "id_foto")
     private Foto foto;
     
 
@@ -121,7 +123,7 @@ public class Sospechoso implements Serializable {
     public void setFoto(Foto foto) {
         this.foto = foto;
         if(foto !=null){
-            foto.setSospechoso(this);
+           foto.setSospechoso(this);
         }  
     }
 

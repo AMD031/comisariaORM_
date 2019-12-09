@@ -81,10 +81,10 @@ public class Correo {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + (int) (this.id_correo ^ (this.id_correo >>> 32));
-        hash = 97 * hash + Objects.hashCode(this.correo);
-        hash = 97 * hash + Objects.hashCode(this.sospechoso);
+        int hash = 3;
+        hash = 89 * hash + (int) (this.id_correo ^ (this.id_correo >>> 32));
+        hash = 89 * hash + Objects.hashCode(this.correo);
+        hash = 89 * hash + Objects.hashCode(this.sospechoso);
         return hash;
     }
 
@@ -112,7 +112,7 @@ public class Correo {
         return true;
     }
 
- 
+    
 
 
    
