@@ -90,6 +90,59 @@ public class ConsultaSospechoso {
         manager.close();
         return sospechosos;
     }
+    
+    
+    
+    
+    
+     public static List<Sospechoso> BusquedaSospechoso(int campo, String busqueda) {
+        List<Sospechoso> sospechosos = null;
+        EntityManager manager = Conexion.devolverConexion().createEntityManager();
+        manager.getTransaction().begin();
+
+       if(campo!=-1){
+           
+  
+        if(campo == Utilidades.NOMBRE ){
+            sospechosos = manager.createQuery(" FROM Sospechoso WHERE Nombre LIKE "+"'%"+busqueda+"%'").getResultList();
+        }
+        
+        if(campo == Utilidades.APELLIDOS ){
+            sospechosos = manager.createQuery(" FROM Sospechoso WHERE Apellidos lIKE "+"'%"+busqueda+"%'").getResultList();
+        }
+        
+          if(campo == Utilidades.ID ){
+            sospechosos = manager.createQuery(" FROM Sospechoso WHERE Id_sospechoso ="+busqueda).getResultList();
+        }
+        
+         if(campo == Utilidades.DOCUMENTO ){
+            sospechosos = manager.createQuery(" FROM Sospechoso WHERE Documento LIKE "+"'%"+busqueda+"%'").getResultList();
+         }  
+
+         if(campo == Utilidades.MATRICULAS ){
+            sospechosos = manager.createQuery("FROM Sospechoso so inner join  fetch so.matriculas as ma where ma.matricula like "+"'%"+busqueda+"%'" ).getResultList();
+         }  
+         
+          if(campo == Utilidades.DOMICILIOS ){
+            sospechosos = manager.createQuery("FROM Sospechoso so inner join fetch so.direcciones as ma where ma.direcion like "+"'%"+busqueda+"%'" ).getResultList();
+         }  
+         
+          if(campo == Utilidades.TELEFONOS ){
+            sospechosos = manager.createQuery("FROM Sospechoso so inner join fetch so.telefonos as ma where ma.telefono like "+"'%"+busqueda+"%'" ).getResultList();
+         }  
+          
+         if(campo == Utilidades.CORREOS ){
+            sospechosos = manager.createQuery("FROM Sospechoso so inner join fetch so.correos as ma where ma.correo like "+"'%"+busqueda+"%'" ).getResultList();
+         }  
+        
+      }
+         manager.getTransaction().commit();
+        manager.close();
+        return sospechosos;
+    }
+    
+    
+    
 
     public static void eliminarSospechoso(long indice) {
         System.out.println(indice);

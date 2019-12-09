@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -38,13 +39,18 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
      */
     private ModeloTabla modelo;//
     private static ArrayList<String> titulosList;
+    private static String busqueda;
+    private static int campoBusqueda;
+    private DefaultTableModel modeleloResultado;
 
     public Tabla() {
         initComponents();
         construirTabla();
         Tsospechosos.addMouseListener(this);
         Tsospechosos.getModel().addTableModelListener(this);
-
+        busqueda = "";
+        campoBusqueda = Utilidades.NOMBRE;
+        modeleloResultado = (DefaultTableModel) tablaResultado.getModel();
     }
 
     private void iniciaMAtualizar(List<? extends Object> s, int columna, long id) {
@@ -62,6 +68,28 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
         restaurarEscucha();
     }
 
+    void limpiartabla() {
+        int a = tablaResultado.getRowCount() - 1;
+        System.out.println(a);
+        for (int i = a; i >= 0; i--) {
+            System.out.println(i);
+            modeleloResultado.removeRow(i);
+        }
+    }
+
+    public void iniciaTablaresultado(List<Sospechoso> datos) {
+        limpiartabla();
+        modeleloResultado = (DefaultTableModel) tablaResultado.getModel();
+
+        if (datos != null) {
+            for (Sospechoso s : datos) {
+                long id = s.getId();
+                modeleloResultado.addRow(new Object[]{s.getId(), s.getNombre(), s.getApellidos(), s.getDocumento(), Controlador.obtenerCampoMul("matriculas", id),
+                    Controlador.obtenerCampoMul("domicilios", id), Controlador.obtenerCampoMul("telefonos", id), Controlador.obtenerCampoMul("correos", id) });
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,23 +100,63 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaResultado = new javax.swing.JTable();
+        TituloTablaSospechosos1 = new javax.swing.JLabel();
         TituloTablaSospechosos = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tsospechosos = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
+        selector = new javax.swing.JComboBox<>();
+        entradaBusqueda = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tablaResultado.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Nombre", "Apellidos", "Dni", "Matricula", "Domicilio", "Telefono", "Correo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tablaResultado);
+
+        TituloTablaSospechosos1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        TituloTablaSospechosos1.setText("Resulta búsqueda");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 948, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(256, 256, 256)
+                        .addComponent(TituloTablaSospechosos1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 227, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(TituloTablaSospechosos1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(101, Short.MAX_VALUE))
         );
 
         TituloTablaSospechosos.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
@@ -121,6 +189,15 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
             }
         });
 
+        selector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Apellidos", "Dni", "Matricula", "Calle", "Telefono", "Correo", "Id" }));
+        selector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectorActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Buscar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,26 +210,37 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(97, 97, 97)
+                                .addGap(235, 235, 235)
                                 .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jButton1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(entradaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jButton1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(20, 20, 20)
+                .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(selector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(entradaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,17 +263,49 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-   
+        this.busqueda = entradaBusqueda.getText();
+        iniciaTablaresultado(Controlador.busquedaCampo(this.campoBusqueda, this.busqueda));
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    void limpiartabla() {
-        int a = modelo.getRowCount() - 1;
-        System.out.println(a);
-        for (int i = a; i >= 0; i--) {
-            System.out.println(i);
-            modelo.removeRow(i);
+
+    private void selectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectorActionPerformed
+
+        JComboBox cb = (JComboBox) evt.getSource();
+        String op = (String) cb.getSelectedItem();
+
+        //Nombre, Apellidos, Dni, Matricula, Calle, Telefono, Correo
+        switch (op) {
+            case "Nombre":
+                this.campoBusqueda = Utilidades.NOMBRE;
+                break;
+            case "Apellidos":
+                this.campoBusqueda = Utilidades.APELLIDOS;
+                break;
+            case "Dni":
+                this.campoBusqueda = Utilidades.DOCUMENTO;
+                break;
+            case "Matricula":
+                this.campoBusqueda = Utilidades.MATRICULAS;
+                break;
+            case "Calle":
+                this.campoBusqueda = Utilidades.DOMICILIOS;
+                break;
+            case "Telefono":
+                this.campoBusqueda = Utilidades.TELEFONOS;
+                break;
+            case "Correo":
+                this.campoBusqueda = Utilidades.CORREOS;
+                break;
+            case "Id":
+                this.campoBusqueda = Utilidades.ID;
+                
+                break;
+                
+                
+
         }
-    }
+
+    }//GEN-LAST:event_selectorActionPerformed
 
     public void construirTabla() {
         titulosList = new ArrayList<>();
@@ -280,7 +400,7 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
             frame.setVisible(true);
             construirTabla();
             restaurarEscucha();
-            
+
         } else if (columna == Utilidades.BORRAR) {
             long id = idTabla(fila);
             modelo.removeRow(fila);
@@ -394,11 +514,17 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel TituloTablaSospechosos;
+    private javax.swing.JLabel TituloTablaSospechosos1;
     private static javax.swing.JTable Tsospechosos;
+    private javax.swing.JTextField entradaBusqueda;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JComboBox<String> selector;
+    private javax.swing.JTable tablaResultado;
     // End of variables declaration//GEN-END:variables
 
     @Override

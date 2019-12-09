@@ -180,6 +180,10 @@ public class Controlador {
       ConsultaSospechoso.borrarComplice(idcomplice, id);
     }
 
+    public static List<Sospechoso> busquedaCampo(int campoBusqueda, String busqueda) {
+     return ConsultaSospechoso.BusquedaSospechoso(campoBusqueda, busqueda);
+    }
+
   
     
     
