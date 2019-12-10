@@ -6,7 +6,7 @@ import com.mycompany.comisariaorm.Modelo.Foto;
 import com.mycompany.comisariaorm.Modelo.Matricula;
 import com.mycompany.comisariaorm.Modelo.Sospechoso;
 import com.mycompany.comisariaorm.Modelo.Telefono;
-import com.mycompany.comisariaorm.Vista.Utilidades;
+import Otros.Utilidades;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;

@@ -5,6 +5,7 @@
  */
 package com.mycompany.comisariaorm.Vista;
 
+import Otros.Utilidades;
 import com.mycompany.comisariaorm.Controlador.Controlador;
 import com.mycompany.comisariaorm.Modelo.Foto;
 import com.mycompany.comisariaorm.Modelo.Matricula;

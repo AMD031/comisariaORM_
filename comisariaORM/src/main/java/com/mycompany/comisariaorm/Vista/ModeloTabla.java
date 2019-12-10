@@ -1,5 +1,6 @@
 package com.mycompany.comisariaorm.Vista;
 
+import Otros.Utilidades;
 import javax.swing.table.DefaultTableModel;
 
 

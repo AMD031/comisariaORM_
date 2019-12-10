@@ -1,4 +1,4 @@
-package com.mycompany.comisariaorm.Vista;
+package Otros;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
