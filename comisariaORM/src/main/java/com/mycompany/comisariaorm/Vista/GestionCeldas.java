@@ -59,7 +59,7 @@ public class GestionCeldas extends DefaultTableCellRenderer{
                 boton.setText("foto");
             } else if( String.valueOf(value).equals("COMPLICE") )
             {
-                boton.setText("complice");
+                boton.setText("complices");
             }
             label.setHorizontalAlignment( JLabel.LEFT );
          // label.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));

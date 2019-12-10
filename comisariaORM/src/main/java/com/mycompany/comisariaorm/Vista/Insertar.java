@@ -9,6 +9,7 @@ import com.mycompany.comisariaorm.Controlador.Controlador;
 import com.mycompany.comisariaorm.Modelo.Foto;
 import com.mycompany.comisariaorm.Modelo.Matricula;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -78,13 +79,13 @@ public class Insertar extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setText("Calle");
+        jLabel1.setText("Calle (opcional)");
 
-        jLabel2.setText("Correo");
+        jLabel2.setText("Correo(opcional)");
 
-        jLabel3.setText("Telefono");
+        jLabel3.setText("Telefono(opcional)");
 
-        jLabel5.setText("Matricula");
+        jLabel5.setText("Matricula(opcional)");
 
         campoCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,7 +93,7 @@ public class Insertar extends javax.swing.JPanel {
             }
         });
 
-        jLabel6.setText("Antecedentes");
+        jLabel6.setText("Antecedentes(opcional)");
 
         jLabel7.setText("Hechos");
 
@@ -103,29 +104,21 @@ public class Insertar extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nombreSospechoso, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(apellidosSospechoso)
-                            .addComponent(jLabel4)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dniSospechoso, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(73, 73, 73))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))))
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(dniSospechoso, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(apellidosSospechoso, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nombreSospechoso, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(campoApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
                     .addComponent(campoDni)
@@ -147,9 +140,9 @@ public class Insertar extends javax.swing.JPanel {
                     .addComponent(jLabel4)
                     .addComponent(jButton1))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nombreSospechoso)
-                    .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombreSospechoso))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(apellidosSospechoso)
@@ -207,9 +200,18 @@ public class Insertar extends javax.swing.JPanel {
 
     }//GEN-LAST:event_campoCorreoActionPerformed
 
+    private void dialogError(String campo){
+            JOptionPane.showMessageDialog(this,
+                "Entrada de datos no valida, no se guardara si no se introduce una entrada valida. "
+                + "\n Error en : el campo"+campo,
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        String nombre =campoNombre.getText();
+        String nombre = campoNombre.getText();
         String apellidos = campoApellido.getText();
         String dni = campoDni.getText();
         String calle = campoCalle.getText();
@@ -219,10 +221,24 @@ public class Insertar extends javax.swing.JPanel {
         String hechos = this.hechos.getText();
         String telefono = campoTelefono.getText();
        
-        Controlador.guardarSospechoso( nombre,  apellidos,  dni,  calle,  matricula,  correo,
-             antecedentes,  hechos,  telefono);
-        
-        
+        if(!Utilidades.esSoloLetras(nombre)) {
+            dialogError(" nombre. Solo puede tener letras.");
+        } else if (Utilidades.tieneNumeros(apellidos)) {
+            dialogError(" apellidos. Solo puede tener letras.");
+        } else if (!Utilidades.validarNIF(dni)) {
+            dialogError(" dni. Tiene que complir el formato.");
+        } else if (!Utilidades.validaMatricula(matricula) && !matricula.equals("") ) {
+            dialogError(" matrícula. La matricula tine que tener 3 letras y 4 numeros");
+        } else if (!Utilidades.validaCorreo(correo)  && !matricula.equals("")) {
+            dialogError(" correo. Tiene que contener una @ y complir el formato ");
+        } else if (!Utilidades.esNumerico(telefono)  && !matricula.equals("") && telefono.length()<=9) {
+           dialogError(" teléfono. Solo puede tener numeros");
+        } else {
+            Controlador.guardarSospechoso(nombre, apellidos, dni, calle, matricula, correo,
+                    antecedentes, hechos, telefono);
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void campoApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoApellidoActionPerformed

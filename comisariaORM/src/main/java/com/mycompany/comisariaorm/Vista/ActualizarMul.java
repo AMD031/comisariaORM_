@@ -9,6 +9,8 @@ import com.mycompany.comisariaorm.Controlador.Controlador;
 
 import java.util.ArrayList;
 import java.util.List;
+import javassist.bytecode.analysis.Util;
+import javax.swing.JOptionPane;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -17,38 +19,108 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-
 /**
  * @author Your Name <Antonio Martinez Diaz>
  */
-public class ActualizarMul extends javax.swing.JPanel implements TableModelListener{
-    public ArrayList<String> datosTabla;
+public class ActualizarMul extends javax.swing.JPanel implements TableModelListener {
+
+    private ArrayList<String> datosTabla;
     private DefaultTableModel model;
-    
+
     /**
      * Creates new form actualizar
      */
     private long id;
     private int campo;
+
     public ActualizarMul(long id, int campo) {
         datosTabla = new ArrayList();
         initComponents();
         this.id = id;
-        this.campo = campo; 
+        this.campo = campo;
         this.Datos.getModel().addTableModelListener(this);
     }
-    
-    public ArrayList<String>obtenerDatosTabla(){
-        for (int i =0; i<model.getRowCount(); i++ ) {
-           if( model.getValueAt(i, 0)!=null && !(((String) model.getValueAt(i, 0)).equals(""))){
-              datosTabla.add( (String) model.getValueAt(i, 0) );
-           }
-        }  
-        return datosTabla;
+
+    private List<String> validaTelefono() {
+        List<String> datos = null;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 0) != null && !(((String) model.getValueAt(i, 0)).equals(""))) {
+                String dato = (String) model.getValueAt(i, 0);
+                if (!Utilidades.esNumerico(dato) && datos == null) {
+                    datos = new ArrayList<>();
+                    datos.add(String.valueOf((1+i)));
+                } else if (!Utilidades.esNumerico(dato)) {
+                    datos.add(String.valueOf((1+i)));
+                }
+            }
+        }
+        return datos;
     }
     
-   
     
+      private List<String> validaCorreo() {
+        List<String> datos = null;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 0) != null && !(((String) model.getValueAt(i, 0)).equals(""))) {
+                String dato = (String) model.getValueAt(i, 0);
+                if (!Utilidades.validaCorreo(dato) && datos == null) {
+                    datos = new ArrayList<>();
+                    datos.add(String.valueOf((1+i)));
+                } else if (!Utilidades.validaCorreo(dato)) {
+                    datos.add(String.valueOf((1+i)));
+                }
+            }
+        }
+        return datos;
+    }
+       private List<String> validaMatricula() {
+        List<String> datos = null;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 0) != null && !(((String) model.getValueAt(i, 0)).equals(""))) {
+                String dato = (String) model.getValueAt(i, 0);
+                if (!Utilidades.validaMatricula(dato) && datos == null) {
+                    datos = new ArrayList<>();
+                    datos.add(String.valueOf((1+i)));
+                } else if (!Utilidades.validaMatricula(dato)) {
+                    datos.add(String.valueOf((1+i)));
+                }
+            }
+        }
+        return datos;
+    }
+    
+
+    private void dialogfilasErroneas(List<String> errores) {     
+         StringBuilder sb = new StringBuilder();
+         for (String error : errores) {
+               sb.append(" "+error);
+        }
+         JOptionPane.showMessageDialog(this,
+                "Entrada de datos no valida, no se guardara si no se introduce una entrada valida. "
+                + "\n las filas no validas son: "+sb.toString(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        
+    }
+
+    private ArrayList<String> obtenerDatosTabla() {
+
+        if (campo == Utilidades.TELEFONOS && validaTelefono() != null) {    
+            dialogfilasErroneas(validaTelefono());
+        } else if (campo == Utilidades.CORREOS && validaCorreo() != null) {
+            dialogfilasErroneas(validaCorreo());
+        }else if(campo == Utilidades.MATRICULAS && validaMatricula() != null){
+           dialogfilasErroneas(validaMatricula());
+        }else{
+            for (int i = 0; i < model.getRowCount(); i++) {
+                if (model.getValueAt(i, 0) != null && !(((String) model.getValueAt(i, 0)).equals(""))) {
+                    datosTabla.add((String) model.getValueAt(i, 0));
+                }
+            }
+        }
+        return datosTabla;
+    }
+
     public void nombreColumna1(String s) {
         JTableHeader th = Datos.getTableHeader();
         TableColumnModel tcm = th.getColumnModel();
@@ -62,24 +134,21 @@ public class ActualizarMul extends javax.swing.JPanel implements TableModelListe
             nombreColumna1("Matricula");
         }
         if (Utilidades.DOMICILIOS == columna) {
-             nombreColumna1("Domicilios");
+            nombreColumna1("Domicilios");
         }
 
         if (Utilidades.TELEFONOS == columna) {
-           nombreColumna1("Telefonos");
+            nombreColumna1("Telefonos");
         }
-        
+
         if (Utilidades.CORREOS == columna) {
-             nombreColumna1("Correos");
+            nombreColumna1("Correos");
         }
         model = (DefaultTableModel) Datos.getModel();
-
         for (Object e : elementos) {
             model.addRow(new Object[]{e.toString()});
         }
     }
-    
-  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -162,12 +231,14 @@ public class ActualizarMul extends javax.swing.JPanel implements TableModelListe
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        obtenerDatosTabla();
-        Controlador.actualizarMul(this.id, this.campo, datosTabla);
+             obtenerDatosTabla();
+             Controlador.actualizarMul(this.id, this.campo, datosTabla);
+     
+   
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        model.removeRow( Datos.getSelectionModel().getLeadSelectionIndex());       
+        model.removeRow(Datos.getSelectionModel().getLeadSelectionIndex());
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
@@ -181,10 +252,7 @@ public class ActualizarMul extends javax.swing.JPanel implements TableModelListe
 
     @Override
     public void tableChanged(TableModelEvent e) {
-     
-            System.out.println(e.getFirstRow());
+        System.out.println(e.getFirstRow());
     }
 
-  
- 
 }

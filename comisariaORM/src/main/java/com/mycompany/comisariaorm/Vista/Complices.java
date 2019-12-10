@@ -41,7 +41,6 @@ public class Complices extends javax.swing.JPanel  implements TableModelListener
         x.addKeyListener(new KeyAdapter() {
          public void keyPressed(KeyEvent ke) {
             String value = x.getText();
-            int l = value.length();
             if ( (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9' ) || ke.getKeyCode() == KeyEvent.VK_DELETE || 
                     KeyEvent.VK_SPACE == ke.getKeyCode()) {
                 x.setEditable(true);

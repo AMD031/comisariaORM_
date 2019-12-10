@@ -19,11 +19,14 @@ import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -85,7 +88,7 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
             for (Sospechoso s : datos) {
                 long id = s.getId();
                 modeleloResultado.addRow(new Object[]{s.getId(), s.getNombre(), s.getApellidos(), s.getDocumento(), Controlador.obtenerCampoMul("matriculas", id),
-                    Controlador.obtenerCampoMul("domicilios", id), Controlador.obtenerCampoMul("telefonos", id), Controlador.obtenerCampoMul("correos", id) });
+                    Controlador.obtenerCampoMul("domicilios", id), Controlador.obtenerCampoMul("telefonos", id), Controlador.obtenerCampoMul("correos", id)});
             }
         }
     }
@@ -111,6 +114,8 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
         selector = new javax.swing.JComboBox<>();
         entradaBusqueda = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -198,6 +203,10 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
 
         jLabel1.setText("Buscar");
 
+        jLabel2.setText("Haz clic en un campo multivaluado para añdir más valores.");
+
+        jLabel3.setText("Los campo mono valuados se edita directamente en la tabla.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -206,17 +215,14 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(235, 235, 235)
-                                .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jButton1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(selector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -224,8 +230,15 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
                                 .addComponent(entradaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(91, 91, 91))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(235, 235, 235)
+                        .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,13 +246,16 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
                 .addGap(20, 20, 20)
                 .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(selector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(entradaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -298,10 +314,8 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
                 break;
             case "Id":
                 this.campoBusqueda = Utilidades.ID;
-                
+
                 break;
-                
-                
 
         }
 
@@ -403,7 +417,6 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
 
         } else if (columna == Utilidades.BORRAR) {
             long id = idTabla(fila);
-            modelo.removeRow(fila);
             ConsultaSospechoso.eliminarSospechoso(id);
             construirTabla();
             restaurarEscucha();
@@ -466,8 +479,7 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
     }
 
     @Override
-    public void mousePressed(MouseEvent arg0) {
-        // TODO Auto-generated method stub
+    public void mousePressed(MouseEvent e) {
 
     }
 
@@ -486,12 +498,16 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+
+            UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+            /*  for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
-            }
+                
+         
+            }*/
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Tabla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -520,6 +536,8 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -527,17 +545,65 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
     private javax.swing.JTable tablaResultado;
     // End of variables declaration//GEN-END:variables
 
+    private void actualizaCelda(TableModelEvent e) {
+        String id = (String) modelo.getValueAt(e.getFirstRow(), 0);
+        System.out.println(modelo.getValueAt(e.getFirstRow(), 0));
+        Long Id = Long.parseLong(id);
+        String cambio = (String) modelo.getValueAt(e.getFirstRow(), e.getColumn());
+        Controlador.actualizarMo(Id, (Integer.valueOf(e.getColumn())), cambio);
+    }
+
+    private void errorTextoDialog() {
+        JOptionPane.showMessageDialog(this,
+                "Entrada de datos no valida, no se guardara si no se introduce una entrada valida. "
+                + "\n Solo texto sin ni números",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void errorDni() {
+        JOptionPane.showMessageDialog(this,
+                "Entrada de datos no valida, no se guardara si no se introduce una entrada valida. "
+                + "\n el dni no es correcto",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
     @Override
     public void tableChanged(TableModelEvent e) {
-        if (e.getColumn() == Utilidades.NOMBRE
-                || e.getColumn() == Utilidades.APELLIDOS
-                || e.getColumn() == Utilidades.DOCUMENTO) {
+        String Cambio = (String) modelo.getValueAt(e.getFirstRow(), e.getColumn());
+        if (e.getColumn() == Utilidades.NOMBRE) {
+            if (Utilidades.esSoloLetras(Cambio)) {
+                actualizaCelda(e);
+            } else {
+                errorTextoDialog();
+                construirTabla();
+                restaurarEscucha();
+            }
+        }
+        
+        
+        if ( e.getColumn() == Utilidades.APELLIDOS) {
+            if (!Utilidades.tieneNumeros(Cambio)) {
+                actualizaCelda(e);
+            } else {
+                errorTextoDialog();
+                construirTabla();
+                restaurarEscucha();
 
-            String id = (String) modelo.getValueAt(e.getFirstRow(), 0);
-            System.out.println(modelo.getValueAt(e.getFirstRow(), 0));
-            Long Id = Long.parseLong(id);
-            String cambio = (String) modelo.getValueAt(e.getFirstRow(), e.getColumn());
-            Controlador.actualizarMo(Id, (Integer.valueOf(e.getColumn())), cambio);
+            }
+        }
+        
+        
+        if (e.getColumn() == Utilidades.DOCUMENTO) {
+            if (Utilidades.validarNIF(Cambio)) {
+                actualizaCelda(e);
+            } else {
+                errorDni();
+                construirTabla();
+                restaurarEscucha();
+
+            }
         }
 
     }
