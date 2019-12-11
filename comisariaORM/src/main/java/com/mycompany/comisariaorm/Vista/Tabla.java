@@ -44,6 +44,7 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
     private ModeloTabla modelo;//
     private static ArrayList<String> titulosList;
     private static String busqueda;
+    
     private static int campoBusqueda;
     private DefaultTableModel modeleloResultado;
 
@@ -115,7 +116,6 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
         selector = new javax.swing.JComboBox<>();
         entradaBusqueda = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -204,8 +204,6 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
 
         jLabel1.setText("Buscar");
 
-        jLabel2.setText("Haz clic en un campo multivaluado para añdir más valores.");
-
         jLabel3.setText("Los campo mono valuados se edita directamente en la tabla.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -220,25 +218,24 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
                         .addComponent(jScrollPane1)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(entradaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(91, 91, 91))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(235, 235, 235)
-                        .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(selector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(entradaBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton2)
+                                        .addGap(73, 73, 73)
+                                        .addComponent(jLabel3))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(235, 235, 235)
+                                .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -247,9 +244,7 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
                 .addGap(20, 20, 20)
                 .addComponent(TituloTablaSospechosos, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel2))
+                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -359,10 +354,10 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
             informacion[x][Utilidades.NOMBRE] = Controlador.obtenerCampoMo("nombre", x) + "";
             informacion[x][Utilidades.APELLIDOS] = Controlador.obtenerCampoMo("apellidos", x) + "";
             informacion[x][Utilidades.DOCUMENTO] = Controlador.obtenerCampoMo("documento", x) + "";
-            informacion[x][Utilidades.MATRICULAS] = Controlador.obtenerCampoMul("matriculas", id);
-            informacion[x][Utilidades.DOMICILIOS] = Controlador.obtenerCampoMul("domicilios", id);
-            informacion[x][Utilidades.TELEFONOS] = Controlador.obtenerCampoMul("telefonos", id);
-            informacion[x][Utilidades.CORREOS] = Controlador.obtenerCampoMul("correos", id);;
+            informacion[x][Utilidades.MATRICULAS] = "MATRICULAS";
+            informacion[x][Utilidades.DOMICILIOS] ="DOMICILIOS";
+            informacion[x][Utilidades.TELEFONOS] = "TELEFONOS";
+            informacion[x][Utilidades.CORREOS] = "CORREOS";
             informacion[x][Utilidades.DETALLES] = "PERFIL";
             informacion[x][Utilidades.BORRAR] = "EVENTO";
             informacion[x][Utilidades.FOTO] = "FOTO";
@@ -380,6 +375,11 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
         Tsospechosos.getColumnModel().getColumn(Utilidades.COMPLICE).setCellRenderer(new GestionCeldas("icono"));
         Tsospechosos.getColumnModel().getColumn(Utilidades.DETALLES).setPreferredWidth(60);
         Tsospechosos.getColumnModel().getColumn(Utilidades.BORRAR).setPreferredWidth(60);
+        Tsospechosos.getColumnModel().getColumn(Utilidades.MATRICULAS).setCellRenderer(new GestionCeldas("icono"));
+        Tsospechosos.getColumnModel().getColumn(Utilidades.TELEFONOS).setCellRenderer(new GestionCeldas("icono"));
+        Tsospechosos.getColumnModel().getColumn(Utilidades.CORREOS).setCellRenderer(new GestionCeldas("icono"));
+        Tsospechosos.getColumnModel().getColumn(Utilidades.DOMICILIOS).setCellRenderer(new GestionCeldas("icono"));
+        
     }
 
     private Long idTabla(int fila) {
@@ -537,7 +537,6 @@ public class Tabla extends javax.swing.JFrame implements MouseListener, TableMod
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

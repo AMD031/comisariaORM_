@@ -60,7 +60,18 @@ public class GestionCeldas extends DefaultTableCellRenderer{
             } else if( String.valueOf(value).equals("COMPLICE") )
             {
                 boton.setText("complices");
+            }else if(String.valueOf(value).equals("MATRICULAS")){
+                boton.setText("matriculas");
+            }else if(String.valueOf(value).equals("TELEFONOS")){
+                boton.setText("teléfonos");
+            }else if(String.valueOf(value).equals("DOMICILIOS")){
+                boton.setText("dommicilios");
+            }else if(String.valueOf(value).equals("CORREOS")){
+                    boton.setText("correos");
             }
+            
+            
+            
             label.setHorizontalAlignment( JLabel.LEFT );
          // label.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
           
